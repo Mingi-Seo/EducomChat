@@ -1,6 +1,9 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +11,8 @@ import java.util.ArrayList;
  */
 public class ServerTest {
 
-    private Server server;
+    private Server server = null;
+    private ServerSocket socket = null;
 
     @Before
     public void setUp() throws Exception {
@@ -21,7 +25,7 @@ public class ServerTest {
     }
 
     @Test
-    public void serverConnection() {
-        server.createSocket();
+    public void serverConnection() throws IOException {
+        socket = server.createSocket();
     }
 }
