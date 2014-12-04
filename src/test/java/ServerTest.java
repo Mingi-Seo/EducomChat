@@ -19,4 +19,9 @@ public class ServerTest {
     public void serverStart() {
         server.start();
     }
+
+    @Test
+    public void serverConnection() {
+        server.createSocket();
+    }
 }
