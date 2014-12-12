@@ -12,6 +12,6 @@ public class SimpleChatMain {
         SimpleChatServer server = new SimpleChatServer();
         ClientController client = new ClientController("localhost", new ClientView());
 
-        server.start();
+        //server.start();
     }
 }

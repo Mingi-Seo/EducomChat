@@ -108,13 +108,19 @@ public class ClientView implements ActionListener {
         jframe.setResizable(false);
     }
 
-    public void setVisible(boolean flag) {
-        // 프레임 표시
-        jframe.setVisible(flag);
+    public interface ClientEventListener{
+        public void onExit(ClientView v);
+        public void onLogin(ClientView v);
+        public void onLogout(ClientView v);
+        public void onMsgSend(ClientView v);
     }
 
-    public void show(){
-        this.setVisible(true);
+    public void setEventListener(ClientEventListener listener){
+        this.clientEventListener = listener;
+    }
+
+    public ClientEventListener getEventListener(){
+        return this.clientEventListener;
     }
 
     // 이벤트 처리
@@ -133,22 +139,17 @@ public class ClientView implements ActionListener {
         }
     }
 
+    public void setVisible(boolean flag) {
+        // 프레임 표시
+        jframe.setVisible(flag);
+    }
+
+    public void show(){
+        this.setVisible(true);
+    }
+
     public boolean isVisable() {
         return jframe.isVisible();
     }
 
-    public interface ClientEventListener{
-        public void onExit(ClientView v);
-        public void onLogin(ClientView v);
-        public void onLogout(ClientView v);
-        public void onMsgSend(ClientView v);
-    }
-
-    public void setEventListener(ClientEventListener listener){
-        this.clientEventListener = listener;
-    }
-
-    public ClientEventListener getEventListener(){
-        return this.clientEventListener;
-    }
 }

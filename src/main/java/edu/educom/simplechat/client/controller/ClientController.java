@@ -16,66 +16,15 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
     private BufferedReader inMsg = null;
     private PrintWriter outMsg = null;
 
-    private Thread thread;
+    private Thread msgReceiveThread;
 
     // 상태 플래그
     boolean status;
-
 
     public ClientController(String ip, ClientView view) {
         this.ip = ip;
         this.view = view;
         view.setEventListener(this);
-    }
-
-    public void connectServer(String id) {
-        try {
-            // 소켓 생성
-            socket = new Socket(ip, 8888);
-            System.out.println("[Client]Server 연결 성공!");
-
-            // 입출력 스트림 생성
-            inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
-            //outMsg = new PrintWriter(socket.getOutputStream(), true);
-            outMsg = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"));
-
-            // 서버에 로그인 메시지 전달
-            outMsg.println(id + "/" + "login");
-            outMsg.flush();
-            // 메시지 수신을 위한 스레드 생성
-            thread = new Thread(this);
-            thread.start();
-        } catch (Exception e) {
-            // e.printStackTrace();
-            System.out.println("[MultiChatClient]connectServer() Exception 발생!!");
-        }
-    }
-
-    public void run() {
-        // 수신 메시지를 처리하는 변수
-        String msg;
-        String[] rmsg;
-
-        status = true;
-
-        while (status) {
-            try {
-                // 메시지 수신과 파싱
-                msg = inMsg.readLine();
-                rmsg = msg.split("/");
-
-                // JTextArea에 수신된 메시지 추가
-                view.msgOut.append(rmsg[0] + ">" + rmsg[1] + "\n");
-
-                // 커서를 현재 대화 메시지에 표시
-                view.msgOut.setCaretPosition(view.msgOut.getDocument().getLength());
-            } catch (IOException e) {
-                // e.printStackTrace();
-                status = false;
-            }
-        }
-
-        System.out.println("[MultiChatClient]" + thread.getName() + "종료됨");
     }
 
     @Override
@@ -88,7 +37,7 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
         id = view.idInput.getText();
         view.label2.setText("대화명 : " + id);
         view.clayout.show(view.tab, "logout");
-        connectServer(id);
+        connectServer();
     }
 
     @Override
@@ -119,4 +68,68 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
         outMsg.flush();
     }
 
+    public void connectServer() {
+        if (id == null){
+            throw new Error("id가 정해지지 않았습니다. 로그인을 하십시오.");
+        }
+        try {
+            // 소켓 생성
+            socket = new Socket(ip, 8888);
+            System.out.println("[Client]Server 연결 성공!");
+
+            // 입출력 스트림 생성
+            inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
+            //outMsg = new PrintWriter(socket.getOutputStream(), true);
+            outMsg = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"));
+
+            // 서버에 로그인 메시지 전달
+            outMsg.println(id + "/" + "login");
+            outMsg.flush();
+            // 메시지 수신을 위한 스레드 생성
+            msgReceiveThread = new Thread(this);
+            msgReceiveThread.start();
+        } catch (Exception e) {
+            // e.printStackTrace();
+            System.out.println("[MultiChatClient]connectServer() Exception 발생!!");
+        }
+    }
+
+    public void run() {
+        // 수신 메시지를 처리하는 변수
+        String msg;
+        String[] rmsg;
+
+        status = true;
+
+        while (status) {
+            try {
+                // 메시지 수신과 파싱
+                msg = inMsg.readLine();
+                rmsg = msg.split("/");
+
+                // JTextArea에 수신된 메시지 추가
+                view.msgOut.append(rmsg[0] + ">" + rmsg[1] + "\n");
+
+                // 커서를 현재 대화 메시지에 표시
+                view.msgOut.setCaretPosition(view.msgOut.getDocument().getLength());
+            } catch (IOException e) {
+                // e.printStackTrace();
+                status = false;
+            }
+        }
+
+        System.out.println("[MultiChatClient]" + msgReceiveThread.getName() + "종료됨");
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public boolean isConnected() {
+        return msgReceiveThread.isAlive();
+    }
 }
