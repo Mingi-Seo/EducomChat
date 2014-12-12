@@ -34,7 +34,7 @@ public class EducomServer {
             }
         } catch (Exception e) {
             // System.out.println(e);
-            System.out.println("[MultiChatServer]start() Exception 발생!!");
+            System.out.println("[MultiChatServer]start() Exception 발생!");
         }
     }
 

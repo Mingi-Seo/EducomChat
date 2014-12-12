@@ -125,7 +125,7 @@ public class EducomClient implements ActionListener, Runnable {
         try {
             // 소켓 생성
             socket = new Socket(ip, 8888);
-            System.out.println("[Client]Server 연결 성공!!");
+            System.out.println("[Client]Server 연결 성공!");
 
             // 입출력 스트림 생성
             inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
