@@ -132,6 +132,11 @@ public class ClientView implements ActionListener {
             clientEventListener.onMsgSend(this);
         }
     }
+
+    public boolean isVisable() {
+        return jframe.isVisible();
+    }
+
     public interface ClientEventListener{
         public void onExit(ClientView v);
         public void onLogin(ClientView v);
