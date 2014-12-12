@@ -78,15 +78,6 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
         System.out.println("[MultiChatClient]" + thread.getName() + "종료됨");
     }
 
-    public static void main(String[] args) {
-        //ClientController mcc = new ClientController("203.253.207.123");
-        //EduComClient mcc = new EduComClient("127.0.0.1");
-        final ClientView view = new ClientView();
-        view.show();
-        view.setEventListener(new ClientController("203.253.207.123", view));
-    }
-
-
     @Override
     public void onExit(ClientView view) {
         System.exit(0);
@@ -127,4 +118,5 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
         view.msgInput.setText("");
         outMsg.flush();
     }
+
 }
