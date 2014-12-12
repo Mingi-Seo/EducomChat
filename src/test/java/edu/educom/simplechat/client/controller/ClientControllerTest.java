@@ -17,23 +17,23 @@ public class ClientControllerTest {
     @Test
     public void testMain() throws Exception {
         final SimpleChatServer server = new SimpleChatServer();
-        server.start();
+        server.serverStart();
         final ClientView view = new ClientView();
         view.setEventListener(new ClientController("203.253.207.123", view));
         view.show();
-        server.close();
+        server.serverStop();
     }
 
     @Test
     public void testConnectServer() throws Exception {
         final SimpleChatServer server = new SimpleChatServer();
-        server.start();
+        server.serverStart();
         final MockClientView view = new MockClientView();
         final ClientController controller = new ClientController("203.253.207.123", view);
         view.getEventListener().onLogin(view);
         controller.connectServer();
         assertEquals(true, controller.isConnected());
-        server.close();
+        server.serverStop();
     }
 
     class MockClientView extends ClientView{
