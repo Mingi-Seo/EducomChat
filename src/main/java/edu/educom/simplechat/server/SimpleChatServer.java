@@ -1,3 +1,5 @@
+package edu.educom.simplechat.server;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Mingi-Seo on 2014-11-18.
  */
-public class EducomServer {
+public class SimpleChatServer {
 
     // 서버 소켓과 클라이언트 연결 소켓
     private ServerSocket serverSocket = null;
@@ -33,13 +35,13 @@ public class EducomServer {
                 chat.start();
             }
         } catch (Exception e) {
-            // System.out.println(e);
+            System.out.println(e);
             System.out.println("[MultiChatServer]start() Exception 발생!");
         }
     }
 
     public static void main(String[] args) {
-        EducomServer server = new EducomServer();
+        SimpleChatServer server = new SimpleChatServer();
         server.start();
     }
 
@@ -84,6 +86,10 @@ public class EducomServer {
 
                     // 파싱된 문자열 배열의 두번째 요소값에 따라 처리
                     // 로그아웃 메시지일 때
+                    if (rmsg.length < 2){
+                        System.out.println("It must be empty msg... do not broadcast / msg : " + msg);
+                        continue;
+                    }
                     if (rmsg[1].equals("logout")) {
                         chatlist.remove(this);
                         msgSendAll("server/" + rmsg[0] + "님이 종료했습니다.");
