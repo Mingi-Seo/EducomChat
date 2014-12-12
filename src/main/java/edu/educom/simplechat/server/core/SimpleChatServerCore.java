@@ -49,8 +49,10 @@ public class SimpleChatServerCore {
     // 연결된 모든 클라이언트에 메시지 중계
     void msgSendAll(String msg) {
         for (ChatThread ct : chatlist) {
-            ct.outMsg.println(msg);
-            ct.outMsg.flush();
+            if (ct.outMsg != null) {
+                ct.outMsg.println(msg);
+                ct.outMsg.flush();
+            }
         }
     }
 
