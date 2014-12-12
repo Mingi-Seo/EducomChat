@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class EducomServer {
 
     // 서버 소켓과 클라이언트 연결 소켓
-    private ServerSocket ss = null;
-    private Socket s = null;
+    private ServerSocket serverSocket = null;
+    private Socket clientSocket = null;
 
     // 연결된 클라이언트 스레드를 관리하는 ArrayList
     ArrayList<ChatThread> chatlist = new ArrayList<ChatThread>();
@@ -19,12 +19,12 @@ public class EducomServer {
     public void start() {
         try {
             // 서버 소켓 생성
-            ss = new ServerSocket(8888);
+            serverSocket = new ServerSocket(8888);
             System.out.println("server start");
 
             // 무한루프를 돌면서 클라이언트 연결을 기다림
             while (true) {
-                s = ss.accept();
+                clientSocket = serverSocket.accept();
                 // 연결된 클라이언트에서 스레드 클래스 생성
                 ChatThread chat = new ChatThread();
                 // 클라이언트 리스트 추가
@@ -47,6 +47,7 @@ public class EducomServer {
     void msgSendAll(String msg) {
         for (ChatThread ct : chatlist) {
             ct.outMsg.println(msg);
+            ct.outMsg.flush();
         }
     }
 
@@ -62,19 +63,21 @@ public class EducomServer {
         private PrintWriter outMsg = null;
 
         public void run() {
-
             boolean status = true;
             System.out.println("##ChatThread start...");
             try {
                 // 입출력 스트림 생성
-                //inMsg = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                //outMsg = new PrintWriter(s.getOutputStream(), true);
-                inMsg = new BufferedReader(new InputStreamReader(s.getInputStream(), "euc-kr"));
-                outMsg = new PrintWriter(new OutputStreamWriter(s.getOutputStream(), "euc-kr"));
+                //inMsg = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                //outMsg = new PrintWriter(clientSocket.getOutputStream(), true);
+                inMsg = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "utf-8"));
+                outMsg = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), "utf-8"));
 
                 // 상태정보가 true면 루프를 돌면서 사용자한테서 수신된 메시지 처리
                 while (status) {
                     // 수신된 메시지를 msg 변수에 저장
+                    if (!inMsg.ready()){    // 버퍼가 준비되지 않았을 경우
+                        continue;
+                    }
                     msg = inMsg.readLine();
                     // '/' 구분자를 기준으로 메시지를 문자열 배열로 파싱
                     rmsg = msg.split("/");

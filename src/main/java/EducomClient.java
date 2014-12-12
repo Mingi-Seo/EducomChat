@@ -128,13 +128,13 @@ public class EducomClient implements ActionListener, Runnable {
             System.out.println("[Client]Server 연결 성공!!");
 
             // 입출력 스트림 생성
-            inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream(), "euc-kr"));
+            inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
             //outMsg = new PrintWriter(socket.getOutputStream(), true);
-            outMsg = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "euc-kr"));
+            outMsg = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"));
 
             // 서버에 로그인 메시지 전달
             outMsg.println(id + "/" + "login");
-
+            outMsg.flush();
             // 메시지 수신을 위한 스레드 생성
             thread = new Thread(this);
             thread.start();
@@ -179,6 +179,7 @@ public class EducomClient implements ActionListener, Runnable {
             // 입력 창 클리어
             msgInput.setText("");
         }
+        outMsg.flush();
     }
 
     public void run() {
