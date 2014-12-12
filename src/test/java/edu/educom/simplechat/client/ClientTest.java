@@ -1,3 +1,5 @@
+package edu.educom.simplechat.client;
+
 import edu.educom.simplechat.client.controller.ClientController;
 import edu.educom.simplechat.client.gui.ClientView;
 import org.junit.Test;
@@ -11,11 +13,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientTest {
     @Test
     public void testClient() {
-        ClientView clientView = new ClientView();
-        ClientController controller = new ClientController("203.253.207.123", clientView);
-        clientView.show();
-        assertThat(clientView.isVisable(), is(true));
+        new SimpleChatClient().startApp("203.253.207.123");
     }
-
-
 }
