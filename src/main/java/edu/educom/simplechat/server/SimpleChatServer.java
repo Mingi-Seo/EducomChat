@@ -13,19 +13,20 @@ import java.util.ArrayList;
 public class SimpleChatServer {
     Thread serverCoreThread;
     public static void main(String[] args) {
-        new Thread(new Runnable() {
+
+    }
+
+    public void serverStart(){
+        serverCoreThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 new SimpleChatServerCore().start();
             }
-        }).start();
+        });
+        serverCoreThread.start();
     }
 
-    public void start(){
-
-    }
-
-    public void close(){
-
+    public void serverStop(){
+        serverCoreThread.interrupt();
     }
 }
