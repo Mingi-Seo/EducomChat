@@ -60,6 +60,10 @@ public class SimpleChatServerCore {
         alive = false;
     }
 
+    public boolean isAlive(){
+        return alive;
+    }
+
     // 각 클라이언트 관리를 위한 스레드 클래스
     class ChatThread extends Thread {
 
@@ -121,8 +125,5 @@ public class SimpleChatServerCore {
                 System.out.println("[ChatThread]run() IOException 발생!!");
             }
         }
-    }
-    public boolean isAlive(){
-        return alive;
     }
 }
