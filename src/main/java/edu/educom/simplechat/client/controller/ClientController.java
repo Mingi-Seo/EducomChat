@@ -24,6 +24,8 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
     public ClientController(String ip, ClientView view) {
         this.ip = ip;
         this.view = view;
+
+        //  이벤트 리스너로 컨트롤러를 등록
         view.setEventListener(this);
     }
 
@@ -35,8 +37,12 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
     @Override
     public void onLogin(ClientView view) {
         id = view.idInput.getText();
+
+        if (id == null || id.length() == 0){
+            throw new Error("id가 정해지지 않았습니다. 로그인을 하십시오.");
+        }
         view.label2.setText("대화명 : " + id);
-        view.clayout.show(view.tab, "logout");
+        view.cLayout.show(view.tab, "logout");
         connectServer();
     }
 
@@ -47,7 +53,7 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
         // 대화 창 클리어
         view.msgOut.setText("");
         // 로그인 패널로 전환
-        view.clayout.show(view.tab, "login");
+        view.cLayout.show(view.tab, "login");
         outMsg.close();
         try {
             inMsg.close();
@@ -69,9 +75,6 @@ public class ClientController implements ClientView.ClientEventListener, Runnabl
     }
 
     public void connectServer() {
-        if (id == null){
-            throw new Error("id가 정해지지 않았습니다. 로그인을 하십시오.");
-        }
         try {
             // 소켓 생성
             socket = new Socket(ip, 8888);
