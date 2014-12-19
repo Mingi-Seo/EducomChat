@@ -41,10 +41,12 @@ public class SimpleChatServerCore {
         }
     }
 
+    /*
     public static void main(String[] args) {
         SimpleChatServerCore server = new SimpleChatServerCore();
         server.start();
     }
+    */
 
     // 연결된 모든 클라이언트에 메시지 중계
     void msgSendAll(String msg) {
@@ -96,11 +98,11 @@ public class SimpleChatServerCore {
                     rmsg = msg.split("/");
 
                     // 파싱된 문자열 배열의 두번째 요소값에 따라 처리
-                    // 로그아웃 메시지일 때
                     if (rmsg.length < 2){
                         System.out.println("It must be empty msg... do not broadcast / msg : " + msg);
                         continue;
                     }
+                    // 로그아웃 메시지일 때
                     if (rmsg[1].equals("logout")) {
                         chatlist.remove(this);
                         msgSendAll("server/" + rmsg[0] + "님이 종료했습니다.");

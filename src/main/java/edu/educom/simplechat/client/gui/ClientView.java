@@ -39,11 +39,12 @@ public class ClientView implements ActionListener {
 
     // 카드 레이아웃 관련
     public final Container tab;
-    public final CardLayout clayout;
+    public final CardLayout cLayout;
 
     // 동작 위임자
     ClientEventListener clientEventListener;
-    public ClientView(){
+
+    public ClientView() {
         // 로그인 패널 구성
         loginPanel = new JPanel();
         // 레이아웃 설정
@@ -85,8 +86,8 @@ public class ClientView implements ActionListener {
 
         // 로그인/로그아웃 패널 선택을 위한 카드 레이아웃 패널
         tab = new JPanel();
-        clayout = new CardLayout();
-        tab.setLayout(clayout);
+        cLayout = new CardLayout();
+        tab.setLayout(cLayout);
         tab.add(loginPanel, "login");
         tab.add(logoutPanel, "logout");
 
@@ -101,25 +102,25 @@ public class ClientView implements ActionListener {
         jframe.add(jsp, BorderLayout.CENTER);
         jframe.add(msgPanel, BorderLayout.SOUTH);
         // 로그인 패널을 우선 표시
-        clayout.show(tab, "login");
+        cLayout.show(tab, "login");
         // 프레임 크기 자동 설정
         jframe.pack();
         // 프레임 크기 조정 불가 설정
         jframe.setResizable(false);
     }
 
-    public interface ClientEventListener{
+    public interface ClientEventListener {
         public void onExit(ClientView v);
         public void onLogin(ClientView v);
         public void onLogout(ClientView v);
         public void onMsgSend(ClientView v);
     }
 
-    public void setEventListener(ClientEventListener listener){
+    public void setEventListener(ClientEventListener listener) {
         this.clientEventListener = listener;
     }
 
-    public ClientEventListener getEventListener(){
+    public ClientEventListener getEventListener() {
         return this.clientEventListener;
     }
 
@@ -144,12 +145,11 @@ public class ClientView implements ActionListener {
         jframe.setVisible(flag);
     }
 
-    public void show(){
+    public void show() {
         this.setVisible(true);
     }
 
     public boolean isVisable() {
         return jframe.isVisible();
     }
-
 }

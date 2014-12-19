@@ -12,11 +12,13 @@ import java.util.ArrayList;
  */
 public class SimpleChatServer {
     Thread serverCoreThread;
+    /*
     public static void main(String[] args) {
 
     }
+    */
 
-    public void serverStart(){
+    public void serverStart() {
         serverCoreThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -26,7 +28,7 @@ public class SimpleChatServer {
         serverCoreThread.start();
     }
 
-    public void serverStop(){
+    public void serverStop() {
         serverCoreThread.interrupt();
     }
 }

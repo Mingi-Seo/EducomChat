@@ -10,8 +10,8 @@ import edu.educom.simplechat.server.SimpleChatServer;
 public class SimpleChatMain {
     public static void main(String[] args) {
         SimpleChatServer server = new SimpleChatServer();
-        ClientController client = new ClientController("localhost", new ClientView());
+        ClientController client = new ClientController("192.168.0.25", new ClientView());
 
-        //server.start();
+        server.serverStart();
     }
 }

@@ -13,6 +13,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientTest {
     @Test
     public void testClient() {
-        new SimpleChatClient().startApp("203.253.207.123");
+        new SimpleChatClient().startApp("192.168.0.25");
     }
 }

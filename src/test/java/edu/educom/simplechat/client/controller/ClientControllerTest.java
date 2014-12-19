@@ -28,17 +28,16 @@ public class ClientControllerTest {
     @Test
     public void testMain() throws Exception {
         final ClientView view = new ClientView();
-        view.setEventListener(new ClientController("203.253.207.123", view));
+        view.setEventListener(new ClientController("192.168.0.25", view));
         view.show();
     }
 
     @Test
     public void testConnectServer() throws Exception {
         final ClientView view = new ClientView();
-        final ClientController controller = new ClientController("203.253.207.123", view);
+        final ClientController controller = new ClientController("192.168.0.25", view);
         view.getEventListener().onLogin(view);
         controller.connectServer();
         assertEquals(true, controller.isConnected());
     }
-
 }
