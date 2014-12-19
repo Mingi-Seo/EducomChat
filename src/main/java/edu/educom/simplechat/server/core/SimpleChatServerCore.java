@@ -104,18 +104,15 @@ public class SimpleChatServerCore {
                     }
                     // 로그아웃 메시지일 때
                     if (rmsg[1].equals("logout")) {
-                        chatlist.remove(this);
-                        msgSendAll("server/" + rmsg[0] + "님이 종료했습니다.");
-                        // 해당 클라이언트 스레드 종료로 인해 status를 false로 설정
-                        status = false;
+                        status = logoutMsg();
                     }
                     // 로그인 메시지일 때
                     else if (rmsg[1].equals("login")) {
-                        msgSendAll("server/" + rmsg[0] + "님이 로그인했습니다.");
+                        loginMsg();
                     }
                     // 그 밖의 일반 메시지일 때
                     else {
-                        msgSendAll(msg);
+                        etcMsg();
                     }
                 } // while 종료
                 // 루프를 벗어나면 클라이언트 연결이 종료되므로 스레드 인터럽트됨
@@ -126,6 +123,23 @@ public class SimpleChatServerCore {
                 // e.printStackTrace();
                 System.out.println("[ChatThread]run() IOException 발생!!");
             }
+        }
+
+        private void etcMsg() {
+            msgSendAll(msg);
+        }
+
+        private void loginMsg() {
+            msgSendAll("server/" + rmsg[0] + "님이 로그인했습니다.");
+        }
+
+        private boolean logoutMsg() {
+            boolean status;
+            chatlist.remove(this);
+            msgSendAll("server/" + rmsg[0] + "님이 종료했습니다.");
+            // 해당 클라이언트 스레드 종료로 인해 status를 false로 설정
+            status = false;
+            return status;
         }
     }
 }
